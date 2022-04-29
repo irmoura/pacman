@@ -13,14 +13,16 @@ public class Game extends JFrame implements KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private Player player = new Player(50, 50, 180);
-	private Ghost ghost1 = new Ghost(0,0,0);
-	private Ghost ghost2 = new Ghost(500,0,0);
+	private Ghost ghost1 = new Ghost(0,0,90);
+	private Ghost ghost2 = new Ghost(500,0,180);
 	private Ghost ghost3 = new Ghost(0,500,0);
 	private Ghost ghost4 = new Ghost(500,500,0);
 	private Bomb bomb = new Bomb(100,100);
 	private Booster booster = new Booster(400, 400);
+	
+	private int count = 0;
 
-	private JLabel imgPlayer = new JLabel(new ImageIcon("src/images/pacman.png"));
+	private JLabel imgPlayer = new JLabel(new ImageIcon("src/images/pacman-4.png"));
 	private JLabel imgGhost1 = new JLabel(new ImageIcon("src/images/ghost.png"));
 	private JLabel imgGhost2 = new JLabel(new ImageIcon("src/images/ghost.png"));
 	private JLabel imgGhost3 = new JLabel(new ImageIcon("src/images/ghost.png"));
@@ -29,7 +31,7 @@ public class Game extends JFrame implements KeyListener {
 	private JLabel imgBooster = new JLabel(new ImageIcon("src/images/booster.png"));
 
 	private final int SCREENSIZE = 600;
-	private int speed = 50;
+	private int speed = 10;//50
 	
 	public static void main(String[] args) {
 		new Game().init();
@@ -88,6 +90,22 @@ public class Game extends JFrame implements KeyListener {
 		while (player.getLife() > 0) {
 			
 			//coloque aqui os métodos de movimentação e colisão 
+			player.move(imgPlayer.getX(), imgPlayer.getY());
+			
+			ghost1.move(imgGhost1.getX(), imgGhost1.getY());
+			ghost2.move(imgGhost2.getX(), imgGhost2.getY());
+			ghost3.move(imgGhost3.getX(), imgGhost3.getY());
+			ghost4.move(imgGhost4.getX(), imgGhost4.getY());
+			
+			count++;
+			
+			if(count == 20) {
+				ghost1.randomDirection();
+				ghost2.randomDirection();
+				ghost3.randomDirection();
+				ghost4.randomDirection();
+				count = 0;
+			}
 			
 			try {
 				Thread.sleep(speed);
@@ -102,10 +120,22 @@ public class Game extends JFrame implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		char c = e.getKeyChar();
-		if (c == '8' || c == 'w') player.setDirection(0);	
-		if (c == '6' || c == 'd') player.setDirection(90);	
-		if (c == '2' || c == 's') player.setDirection(180);	
-		if (c == '4' || c == 'a') player.setDirection(270);	
+		if (c == '8' || c == 'w') {
+			player.setDirection(0);
+			imgPlayer.setIcon(new ImageIcon("src/images/pacman-3.png"));
+		}	
+		if (c == '6' || c == 'd') {
+			player.setDirection(90);
+			imgPlayer.setIcon(new ImageIcon("src/images/pacman.png"));
+		}
+		if (c == '2' || c == 's') {
+			player.setDirection(180);
+			imgPlayer.setIcon(new ImageIcon("src/images/pacman-4.png"));
+		}
+		if (c == '4' || c == 'a') {
+			player.setDirection(270);
+			imgPlayer.setIcon(new ImageIcon("src/images/pacman-2.png"));
+		}
 	}
 
 	@Override
